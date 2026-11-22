@@ -7,6 +7,7 @@ import { PRODUCTS } from "@/data/products";
 import { formatPrice } from "@/utils/currency";
 import { useCart } from "@/context/CartContext";
 import ProductCard from "@/components/ProductCard";
+import { getVideoUrl } from "@/utils/media";
 import {
   Truck,
   RotateCcw,
@@ -117,7 +118,8 @@ export default function ProductDetailPage({ params }) {
             <div className="flex-1 relative aspect-square bg-[#f5f5f5] rounded-xs overflow-hidden border border-neutral-200">
               {isVideoView && product.video ? (
                 <video
-                  src={product.video}
+                  src={getVideoUrl(product.video)}
+                  poster={product.primaryImage}
                   autoPlay
                   controls
                   loop

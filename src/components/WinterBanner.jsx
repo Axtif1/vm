@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { getVideoUrl } from "@/utils/media";
 
 export default function WinterBanner() {
   return (
@@ -45,7 +46,7 @@ export default function WinterBanner() {
           {/* Right Campaign Video Showcase */}
           <div className="order-1 lg:order-2 relative aspect-4/3 sm:aspect-16/10 overflow-hidden bg-neutral-950 shadow-2xl border border-neutral-900">
             <video
-              src="/videos/campaign_winter_1.mp4"
+              src={getVideoUrl("/videos/campaign_winter_1.mp4")}
               poster="/products/sku-03/image_1.jpg"
               autoPlay
               loop

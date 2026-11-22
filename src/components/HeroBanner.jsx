@@ -3,6 +3,7 @@
 import React, { useRef, useState } from "react";
 import Link from "next/link";
 import { ArrowRight, Volume2, VolumeX } from "lucide-react";
+import { getVideoUrl } from "@/utils/media";
 
 export default function HeroBanner() {
   const [isMuted, setIsMuted] = useState(true);
@@ -21,7 +22,7 @@ export default function HeroBanner() {
       <div className="absolute inset-0 z-0">
         <video
           ref={videoRef}
-          src="/videos/hero_reel.mp4"
+          src={getVideoUrl("/videos/hero_reel.mp4")}
           poster="/products/sku-09/image_1.jpg"
           autoPlay
           loop

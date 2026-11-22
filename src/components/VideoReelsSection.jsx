@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { Play, Volume2, VolumeX, Sparkles } from "lucide-react";
+import { getVideoUrl } from "@/utils/media";
 
 export default function VideoReelsSection() {
   const reels = [
@@ -63,7 +64,7 @@ export default function VideoReelsSection() {
               className="group relative aspect-9/16 rounded-lg overflow-hidden bg-black shadow-md border border-neutral-200"
             >
               <video
-                src={reel.src}
+                src={getVideoUrl(reel.src)}
                 poster={reel.poster}
                 autoPlay
                 loop

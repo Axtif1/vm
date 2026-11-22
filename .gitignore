@@ -14,7 +14,6 @@
 
 # Product Media & Assets
 /product_assets/
-/public/products/
 /public/videos/
 *.mp4
 
