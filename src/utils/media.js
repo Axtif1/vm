@@ -7,6 +7,13 @@
  * Otherwise, falls back gracefully to local paths and high-res poster images.
  */
 
+let REMOTE_URLS = {};
+try {
+  REMOTE_URLS = require("./cloudinary_urls.json");
+} catch (e) {
+  // Not uploaded yet
+}
+
 const CLOUDINARY_CLOUD_NAME = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || "";
 const CUSTOM_MEDIA_CDN = process.env.NEXT_PUBLIC_MEDIA_URL || "";
 
@@ -22,6 +29,12 @@ export function getVideoUrl(localPath) {
   // If already an absolute URL (e.g. https://...), return directly
   if (localPath.startsWith("http://") || localPath.startsWith("https://")) {
     return localPath;
+  }
+
+  // 1. Check generated Cloudinary URLs map first
+  const filename = localPath.split("/").pop();
+  if (REMOTE_URLS && REMOTE_URLS[filename]) {
+    return REMOTE_URLS[filename];
   }
 
   // Normalize path without leading slash
