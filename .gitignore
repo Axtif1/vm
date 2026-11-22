@@ -12,8 +12,11 @@
 /build
 /dist
 
-# Raw asset downloads (curated assets are organized in /public)
+# Product Media & Assets
 /product_assets/
+/public/products/
+/public/videos/
+*.mp4
 
 # Debug logs
 npm-debug.log*
