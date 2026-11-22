@@ -38,15 +38,21 @@ export default function Header() {
   return (
     <>
       <header
-        className={`sticky top-0 z-40 w-full bg-black text-white transition-all duration-200 border-b border-neutral-900 ${
-          isScrolled ? "py-3 shadow-md" : "py-3.5 sm:py-4"
+        className={`sticky top-0 z-40 w-full text-white transition-all duration-200 border-b border-neutral-800/80 shadow-md ${
+          isScrolled ? "py-2.5 sm:py-3" : "py-3 sm:py-3.5"
         }`}
+        style={{
+          backgroundColor: "#0f1418",
+          backgroundImage: "radial-gradient(ellipse at center, rgba(15, 20, 24, 0.4) 0%, rgba(10, 14, 18, 0.85) 100%), url('/brand/navbar_grid_pattern.svg')",
+          backgroundRepeat: "repeat",
+          backgroundSize: "cover, 132px 66px"
+        }}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between gap-4">
+        <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-10 relative">
+          <div className="flex items-center justify-between gap-4 min-h-[50px] sm:min-h-[54px]">
             
             {/* Mobile: Hamburger Button */}
-            <div className="flex items-center lg:hidden">
+            <div className="flex items-center lg:hidden z-10">
               <button
                 type="button"
                 onClick={() => setMobileMenuOpen(true)}
@@ -57,8 +63,8 @@ export default function Header() {
               </button>
             </div>
 
-            {/* Logo */}
-            <div className="flex-1 lg:flex-initial flex items-center justify-center lg:justify-start">
+            {/* Logo - Exactly centered on mobile, left-aligned on desktop */}
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 lg:static lg:translate-x-0 lg:translate-y-0 flex items-center justify-center lg:justify-start z-10">
               <Logo variant="header" />
             </div>
 
@@ -89,7 +95,15 @@ export default function Header() {
                       </Link>
 
                       {/* Dropdown Menu */}
-                      <div className="absolute left-0 top-full w-60 bg-[#0f0f11] border border-neutral-800 shadow-2xl rounded-none py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 transform translate-y-1 group-hover:translate-y-0 z-50">
+                      <div
+                        className="absolute left-0 top-full w-60 border border-neutral-800/90 shadow-2xl rounded-none py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 transform translate-y-1 group-hover:translate-y-0 z-50"
+                        style={{
+                          backgroundColor: "#0f1418",
+                          backgroundImage: "url('/brand/navbar_grid_pattern.svg')",
+                          backgroundRepeat: "repeat",
+                          backgroundSize: "132px 66px"
+                        }}
+                      >
                         {link.children.map((sub) => (
                           <Link
                             key={sub.label}
@@ -121,7 +135,7 @@ export default function Header() {
             </nav>
 
             {/* Right Action Icons */}
-            <div className="flex items-center space-x-2 sm:space-x-3">
+            <div className="flex items-center space-x-2 sm:space-x-3 z-10">
               {/* Search button */}
               <button
                 type="button"
@@ -170,7 +184,15 @@ export default function Header() {
           />
 
           {/* Slide-over menu panel */}
-          <div className="relative w-4/5 max-w-sm bg-[#0a0a0a] text-white h-full shadow-2xl flex flex-col z-10 border-r border-neutral-800">
+          <div
+            className="relative w-4/5 max-w-sm text-white h-full shadow-2xl flex flex-col z-10 border-r border-neutral-800"
+            style={{
+              backgroundColor: "#0f1418",
+              backgroundImage: "url('/brand/navbar_grid_pattern.svg')",
+              backgroundRepeat: "repeat",
+              backgroundSize: "132px 66px"
+            }}
+          >
             {/* Header */}
             <div className="p-4 border-b border-neutral-800 flex items-center justify-between">
               <Logo variant="header" />

@@ -1,0 +1,32 @@
+<svg width="264" height="132" viewBox="0 0 264 132" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .grid-line {
+        stroke: rgba(255, 255, 255, 0.11);
+        stroke-width: 1;
+        stroke-linecap: round;
+      }
+      .grid-accent {
+        stroke: rgba(255, 255, 255, 0.05);
+        stroke-width: 1;
+      }
+    </style>
+  </defs>
+  <!-- Background base color matching the logo -->
+  <rect width="264" height="132" fill="#0f1418" />
+
+  <!-- Vertical lines -->
+  <line x1="0" y1="0" x2="0" y2="132" class="grid-line" />
+  <line x1="132" y1="0" x2="132" y2="132" class="grid-line" />
+  <line x1="264" y1="0" x2="264" y2="132" class="grid-line" />
+
+  <!-- Diagonal lines slope +0.5 -->
+  <line x1="0" y1="0" x2="264" y2="132" class="grid-line" />
+  <line x1="0" y1="66" x2="132" y2="132" class="grid-line" />
+  <line x1="132" y1="0" x2="264" y2="66" class="grid-line" />
+
+  <!-- Diagonal lines slope -0.5 -->
+  <line x1="0" y1="132" x2="264" y2="0" class="grid-line" />
+  <line x1="0" y1="66" x2="132" y2="0" class="grid-line" />
+  <line x1="132" y1="132" x2="264" y2="66" class="grid-line" />
+</svg>

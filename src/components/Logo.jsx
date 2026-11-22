@@ -30,14 +30,14 @@ export default function Logo({ variant = "header", className = "" }) {
     );
   }
 
-  // Default header logo - clean and seamless
+  // Default header logo - transparent, larger, and crisp
   return (
     <Link href="/" className={`inline-flex items-center group ${className}`}>
       <img
-        src="/brand/vmind_logo_horizontal_white.png"
+        src="/brand/vmind_navbar_logo_transparent.png"
         alt="V-MIND FASHION"
-        style={{ height: "34px", maxWidth: "160px", width: "auto" }}
-        className="h-8 sm:h-9 w-auto object-contain transition-opacity group-hover:opacity-90"
+        style={{ maxHeight: "56px", width: "auto" }}
+        className="h-12 sm:h-14 lg:h-14 w-auto object-contain transition-transform duration-200 group-hover:scale-103 drop-shadow-sm"
       />
     </Link>
   );

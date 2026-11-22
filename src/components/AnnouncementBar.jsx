@@ -25,7 +25,7 @@ export default function AnnouncementBar() {
 
   return (
     <div className="bg-black text-white border-b border-neutral-900 text-[11px] font-semibold tracking-widest uppercase py-2.5 px-4 select-none relative z-50">
-      <div className="max-w-7xl mx-auto flex items-center justify-between">
+      <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-10 flex items-center justify-between">
         <button
           type="button"
           onClick={prev}

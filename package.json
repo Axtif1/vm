@@ -11,8 +11,10 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@tailwindcss/postcss": "^4.0.0",
     "lucide-react": "^1.59.0",
     "next": "16.4.6",
+    "postcss": "^8.5.3",
     "react": "19.3.0",
     "react-dom": "19.3.0"
   },
