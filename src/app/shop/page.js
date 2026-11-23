@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo, Suspense } from "react";
+import React, { useState, useMemo, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { PRODUCTS, COLLECTIONS, CATEGORIES } from "@/data/products";
 import ProductCard from "@/components/ProductCard";
@@ -16,6 +16,11 @@ function ShopContent() {
     collectionParam || categoryParam || "all"
   );
   const [sortBy, setSortBy] = useState("featured");
+
+  // Keep category in sync with URL search params
+  useEffect(() => {
+    setSelectedCategory(collectionParam || categoryParam || "all");
+  }, [collectionParam, categoryParam]);
 
   // Filter products
   const filteredProducts = useMemo(() => {

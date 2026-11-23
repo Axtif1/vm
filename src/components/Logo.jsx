@@ -4,6 +4,19 @@ import React from "react";
 import Link from "next/link";
 
 export default function Logo({ variant = "header", className = "" }) {
+  if (variant === "dark" || variant === "checkout") {
+    return (
+      <Link href="/" className={`inline-flex items-center group ${className}`}>
+        <img
+          src="/brand/vmind_logo_horizontal_dark.png"
+          alt="V-MIND FASHION"
+          style={{ height: "38px", maxWidth: "180px", width: "auto" }}
+          className="h-9 sm:h-10 w-auto object-contain transition-opacity group-hover:opacity-90"
+        />
+      </Link>
+    );
+  }
+
   if (variant === "footer") {
     return (
       <Link href="/" className={`inline-flex items-center group ${className}`}>

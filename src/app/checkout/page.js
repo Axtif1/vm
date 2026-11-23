@@ -117,7 +117,7 @@ export default function CheckoutPage() {
             <ArrowLeft className="w-4 h-4" />
             <span>Continue Shopping</span>
           </Link>
-          <Logo variant="header" />
+          <Logo variant="dark" />
           <div className="flex items-center gap-1.5 text-xs font-semibold text-emerald-700">
             <Lock className="w-3.5 h-3.5" />
             <span>Secure 256-Bit SSL</span>

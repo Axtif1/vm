@@ -29,14 +29,14 @@ export default function WinterBanner() {
             <div className="flex flex-wrap gap-4 pt-3">
               <Link
                 href="/shop?collection=winter-collection"
-                className="bg-[#11716c] hover:bg-[#0c5652] text-white px-8 py-3.5 text-xs font-bold uppercase tracking-widest transition-colors shadow-md inline-flex items-center space-x-2"
+                className="bg-[#11716c] hover:bg-[#0c5652] text-white px-8 py-3.5 text-xs font-bold uppercase tracking-widest transition-colors shadow-md inline-flex items-center space-x-2 rounded-full cursor-pointer"
               >
                 <span>EXPLORE WINTER DROP</span>
                 <ArrowRight className="w-4 h-4 ml-1" />
               </Link>
               <Link
                 href="/shop?collection=best-sellers"
-                className="border border-neutral-600 hover:border-white text-white px-7 py-3.5 text-xs font-bold uppercase tracking-widest transition-colors"
+                className="border border-neutral-600 hover:border-white text-white px-7 py-3.5 text-xs font-bold uppercase tracking-widest transition-colors rounded-full cursor-pointer"
               >
                 <span>VIEW BEST SELLERS</span>
               </Link>

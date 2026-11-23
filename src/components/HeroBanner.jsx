@@ -56,7 +56,7 @@ export default function HeroBanner() {
         <div className="mt-8 flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
           <Link
             href="/shop?collection=new-arrivals"
-            className="bg-[#11716c] hover:bg-[#0c5652] text-white px-9 py-4 text-xs font-bold tracking-widest uppercase transition-all shadow-md w-full sm:w-auto flex items-center justify-center space-x-2"
+            className="bg-[#11716c] hover:bg-[#0c5652] text-white px-9 py-4 text-xs font-bold tracking-widest uppercase transition-all shadow-md w-full sm:w-auto flex items-center justify-center space-x-2 rounded-full cursor-pointer"
           >
             <span>SHOP NEW ARRIVALS</span>
             <ArrowRight className="w-4 h-4 ml-1" />
@@ -64,7 +64,7 @@ export default function HeroBanner() {
 
           <Link
             href="/shop?collection=waffle-collection"
-            className="bg-transparent hover:bg-white text-white hover:text-black border border-white px-9 py-4 text-xs font-bold tracking-widest uppercase transition-all w-full sm:w-auto text-center"
+            className="bg-transparent hover:bg-white text-white hover:text-black border border-white px-9 py-4 text-xs font-bold tracking-widest uppercase transition-all w-full sm:w-auto text-center rounded-full cursor-pointer"
           >
             <span>WAFFLE COLLECTION</span>
           </Link>

@@ -122,7 +122,7 @@ export default function HomePage() {
         <div className="text-center pt-10 sm:pt-12">
           <Link
             href="/shop?collection=new-arrivals"
-            className="inline-flex items-center space-x-2 bg-neutral-900 hover:bg-[#11716c] text-white px-9 py-3.5 text-xs font-bold uppercase tracking-widest transition-colors shadow-sm"
+            className="inline-flex items-center space-x-2 bg-neutral-900 hover:bg-[#11716c] text-white px-9 py-3.5 text-xs font-bold uppercase tracking-widest transition-colors shadow-sm rounded-full cursor-pointer"
           >
             <span>VIEW ALL NEW ARRIVALS</span>
             <ArrowRight className="w-4 h-4 ml-1" />
@@ -156,7 +156,7 @@ export default function HomePage() {
         <div className="text-center pt-10 sm:pt-12">
           <Link
             href="/shop?collection=best-sellers"
-            className="inline-flex items-center space-x-2 bg-neutral-900 hover:bg-[#11716c] text-white px-9 py-3.5 text-xs font-bold uppercase tracking-widest transition-colors shadow-sm"
+            className="inline-flex items-center space-x-2 bg-neutral-900 hover:bg-[#11716c] text-white px-9 py-3.5 text-xs font-bold uppercase tracking-widest transition-colors shadow-sm rounded-full cursor-pointer"
           >
             <span>VIEW ALL BEST SELLERS</span>
             <ArrowRight className="w-4 h-4 ml-1" />
@@ -188,7 +188,7 @@ export default function HomePage() {
           <div className="text-center pt-10">
             <Link
               href="/shop?collection=waffle-collection"
-              className="inline-flex items-center space-x-2 bg-[#11716c] hover:bg-[#0c5652] text-white px-9 py-3.5 text-xs font-bold uppercase tracking-widest transition-colors shadow-sm"
+              className="inline-flex items-center space-x-2 bg-[#11716c] hover:bg-[#0c5652] text-white px-9 py-3.5 text-xs font-bold uppercase tracking-widest transition-colors shadow-sm rounded-full cursor-pointer"
             >
               <span>EXPLORE ALL WAFFLE WEAVES</span>
               <ArrowRight className="w-4 h-4 ml-1" />

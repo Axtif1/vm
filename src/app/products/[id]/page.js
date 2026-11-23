@@ -2,7 +2,7 @@
 
 import React, { useState, use } from "react";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, useRouter } from "next/navigation";
 import { PRODUCTS } from "@/data/products";
 import { formatPrice } from "@/utils/currency";
 import { useCart } from "@/context/CartContext";
@@ -23,6 +23,7 @@ import {
 } from "lucide-react";
 
 export default function ProductDetailPage({ params }) {
+  const router = useRouter();
   const unwrappedParams = use(params);
   const productId = unwrappedParams.id;
   const product = PRODUCTS.find((p) => p.id === productId || p.slug === productId);
@@ -268,9 +269,10 @@ export default function ProductDetailPage({ params }) {
                 <button
                   type="button"
                   onClick={() => {
-                    handleAddToCart();
+                    addToCart(product, selectedSize, quantity);
+                    router.push("/checkout");
                   }}
-                  className="firvt-pill-btn w-full bg-[#0f1d3c] hover:bg-black text-white py-4 text-xs font-bold tracking-widest transition-all"
+                  className="firvt-pill-btn w-full bg-[#0f1d3c] hover:bg-black text-white py-4 text-xs font-bold tracking-widest transition-all cursor-pointer"
                 >
                   Buy It Now
                 </button>

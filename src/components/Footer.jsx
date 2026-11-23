@@ -22,16 +22,16 @@ export default function Footer() {
   return (
     <footer className="bg-[#0f1115] text-[#ffffff] border-t border-neutral-800 pt-16 pb-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
+
         {/* Main Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-8 pb-12 border-b border-neutral-800">
-          
+
           {/* Brand Info (Span 2 on lg) */}
           <div className="lg:col-span-2 space-y-4">
             <Logo variant="footer" />
             <p className="text-xs text-neutral-400 leading-relaxed max-w-sm pt-2">
-              V-MIND FASHION is a contemporary Indian streetwear and apparel brand based in Jaipur, Rajasthan. 
-              We engineer elevated everyday silhouettes with premium 240+ GSM cotton, textured waffle knits, and authentic garment craftsmanship.
+              V-MIND FASHION is a contemporary Indian streetwear and apparel brand based in Jaipur, Rajasthan.
+              We engineer elevated everyday silhouettes with premium cotton, textured waffle knits, and authentic garment craftsmanship.
             </p>
             <div className="space-y-1.5 text-xs text-neutral-400 pt-2">
               <div className="flex items-center gap-2">
@@ -103,7 +103,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link href="/contact" className="hover:text-white transition-colors">
-                  7-Day Exchange Policy
+                  4-Day Exchange Policy
                 </Link>
               </li>
               <li>

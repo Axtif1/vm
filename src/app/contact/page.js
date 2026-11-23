@@ -48,7 +48,7 @@ export default function ContactPage() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          
+
           {/* Order Tracking & Policies */}
           <div className="space-y-8">
             {/* Order Tracker Box */}
@@ -94,11 +94,11 @@ export default function ContactPage() {
               <h3 className="text-sm font-bold uppercase tracking-wider text-neutral-900">
                 Customer Policies
               </h3>
-              
+
               <div className="p-4 border border-neutral-200 rounded-lg space-y-2 text-xs text-neutral-600">
                 <div className="flex items-center gap-2 font-bold text-neutral-900 uppercase">
                   <RotateCcw className="w-4 h-4 text-[#11716c]" />
-                  <span>7-Day Hassle-Free Exchange</span>
+                  <span>4-Day Hassle-Free Exchange</span>
                 </div>
                 <p>
                   If you need a different size or fit, we happily exchange any unworn, unwashed item with tags attached within 7 days of delivery.

@@ -12,12 +12,12 @@ export default function BrandFeatures() {
     },
     {
       icon: Sparkles,
-      title: "PREMIUM 240+ GSM FABRICS",
+      title: "PREMIUM FABRICS",
       description: "Heavyweight combed cotton & signature waffle knits."
     },
     {
       icon: RotateCcw,
-      title: "7-DAY EASY EXCHANGE",
+      title: "4-DAY EASY EXCHANGE",
       description: "Hassle-free size replacement and customer support."
     },
     {
