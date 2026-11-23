@@ -9,6 +9,7 @@ export function CartProvider({ children }) {
   const [cart, setCart] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [quickAddProduct, setQuickAddProduct] = useState(null);
   const [discountCode, setDiscountCode] = useState("");
   const [discountPercent, setDiscountPercent] = useState(0);
   const [discountError, setDiscountError] = useState("");
@@ -145,7 +146,9 @@ export function CartProvider({ children }) {
         isCartOpen,
         setIsCartOpen,
         isSearchOpen,
-        setIsSearchOpen
+        setIsSearchOpen,
+        quickAddProduct,
+        setQuickAddProduct
       }}
     >
       {children}

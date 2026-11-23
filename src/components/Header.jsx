@@ -35,6 +35,30 @@ export default function Header() {
     setMobileMenuOpen(false);
   }, [pathname]);
 
+  // Lock body scrolling when mobile menu drawer is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      const originalOverflow = document.body.style.overflow;
+      const originalPosition = document.body.style.position;
+      const originalTop = document.body.style.top;
+      const originalWidth = document.body.style.width;
+      const scrollY = window.scrollY;
+
+      document.body.style.overflow = "hidden";
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = "100%";
+
+      return () => {
+        document.body.style.overflow = originalOverflow;
+        document.body.style.position = originalPosition;
+        document.body.style.top = originalTop;
+        document.body.style.width = originalWidth;
+        window.scrollTo(0, scrollY);
+      };
+    }
+  }, [mobileMenuOpen]);
+
   return (
     <>
       <header
@@ -96,13 +120,7 @@ export default function Header() {
 
                       {/* Dropdown Menu */}
                       <div
-                        className="absolute left-0 top-full w-60 border border-neutral-800/90 shadow-2xl rounded-none py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 transform translate-y-1 group-hover:translate-y-0 z-50"
-                        style={{
-                          backgroundColor: "#0f1418",
-                          backgroundImage: "url('/brand/navbar_grid_pattern.svg')",
-                          backgroundRepeat: "repeat",
-                          backgroundSize: "132px 66px"
-                        }}
+                        className="absolute left-0 top-full w-60 bg-black border border-neutral-800/90 shadow-2xl rounded-none py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 transform translate-y-1 group-hover:translate-y-0 z-50"
                       >
                         {link.children.map((sub) => (
                           <Link
@@ -176,26 +194,23 @@ export default function Header() {
 
       {/* Mobile Drawer Navigation */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden flex">
+        <div className="fixed inset-0 z-50 lg:hidden flex overscroll-none touch-none">
           {/* Backdrop */}
           <div
-            className="fixed inset-0 bg-black/80 backdrop-blur-xs transition-opacity"
+            className="fixed inset-0 bg-black/80 backdrop-blur-xs transition-opacity touch-none"
             onClick={() => setMobileMenuOpen(false)}
+            onTouchMove={(e) => e.preventDefault()}
           />
 
           {/* Slide-over menu panel */}
           <div
-            className="relative w-4/5 max-w-sm text-white h-full shadow-2xl flex flex-col z-10 border-r border-neutral-800"
-            style={{
-              backgroundColor: "#0f1418",
-              backgroundImage: "url('/brand/navbar_grid_pattern.svg')",
-              backgroundRepeat: "repeat",
-              backgroundSize: "132px 66px"
-            }}
+            className="relative w-4/5 max-w-sm bg-black text-white h-full shadow-2xl flex flex-col z-10 border-r border-neutral-800 overscroll-contain touch-auto"
           >
             {/* Header */}
-            <div className="p-4 border-b border-neutral-800 flex items-center justify-between">
-              <Logo variant="header" />
+            <div className="p-4 border-b border-neutral-800 flex items-center justify-between shrink-0">
+              <div onClick={() => setMobileMenuOpen(false)}>
+                <Logo variant="header" />
+              </div>
               <button
                 type="button"
                 onClick={() => setMobileMenuOpen(false)}
@@ -207,7 +222,13 @@ export default function Header() {
             </div>
 
             {/* Links List */}
-            <div className="flex-1 overflow-y-auto py-4 px-4 space-y-1">
+            <div
+              className="flex-1 overflow-y-auto py-4 px-4 space-y-1 overscroll-contain"
+              style={{
+                overscrollBehavior: "contain",
+                WebkitOverflowScrolling: "touch"
+              }}
+            >
               {NAV_LINKS.map((link) => {
                 const hasChildren = Boolean(link.children && link.children.length > 0);
 
@@ -247,7 +268,7 @@ export default function Header() {
             </div>
 
             {/* Drawer Footer */}
-            <div className="p-4 border-t border-neutral-800 text-[11px] text-neutral-400 space-y-2">
+            <div className="p-4 border-t border-neutral-800 text-[11px] text-neutral-400 space-y-2 shrink-0">
               <p className="font-semibold text-white">V-MIND FASHION</p>
               <p>Jaipur, Rajasthan, India</p>
               <p>Support: +91 86195 91338</p>

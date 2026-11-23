@@ -20,6 +20,30 @@ export default function SearchModal() {
     }
   }, [isSearchOpen]);
 
+  // Lock body scrolling when search modal is open
+  useEffect(() => {
+    if (isSearchOpen) {
+      const originalOverflow = document.body.style.overflow;
+      const originalPosition = document.body.style.position;
+      const originalTop = document.body.style.top;
+      const originalWidth = document.body.style.width;
+      const scrollY = window.scrollY;
+
+      document.body.style.overflow = "hidden";
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = "100%";
+
+      return () => {
+        document.body.style.overflow = originalOverflow;
+        document.body.style.position = originalPosition;
+        document.body.style.top = originalTop;
+        document.body.style.width = originalWidth;
+        window.scrollTo(0, scrollY);
+      };
+    }
+  }, [isSearchOpen]);
+
   if (!isSearchOpen) return null;
 
   const filteredProducts = query.trim() === ""
@@ -34,15 +58,18 @@ export default function SearchModal() {
   const popularSearches = ["Waffle", "Hoodie", "Drop-Shoulder", "Cargo", "Winter", "Sweatpants"];
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto">
+    <div className="fixed inset-0 z-50 overflow-y-auto overscroll-contain">
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-black/70 backdrop-blur-xs transition-opacity"
+        className="fixed inset-0 bg-black/70 backdrop-blur-xs transition-opacity touch-none"
         onClick={() => setIsSearchOpen(false)}
+        onTouchMove={(e) => e.preventDefault()}
       />
 
       <div className="relative min-h-screen flex items-start justify-center p-4 sm:p-6 lg:p-8 pt-12 sm:pt-20">
-        <div className="relative w-full max-w-2xl bg-white rounded-lg shadow-2xl overflow-hidden z-50">
+        <div className="relative w-full max-w-2xl bg-white rounded-lg shadow-2xl overflow-hidden z-50 overscroll-contain"
+          style={{ overscrollBehavior: "contain" }}
+        >
           
           {/* Search Header */}
           <div className="p-4 sm:p-5 border-b border-neutral-200 flex items-center gap-3">

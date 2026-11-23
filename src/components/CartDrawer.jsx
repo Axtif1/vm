@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
+import { PRODUCTS } from "@/data/products";
 import { formatPrice } from "@/utils/currency";
 import {
   X,
@@ -13,7 +14,9 @@ import {
   ArrowRight,
   Tag,
   ShieldCheck,
-  Truck
+  Truck,
+  ChevronLeft,
+  ChevronRight
 } from "lucide-react";
 
 export default function CartDrawer() {
@@ -23,6 +26,8 @@ export default function CartDrawer() {
     setIsCartOpen,
     removeFromCart,
     updateQuantity,
+    addToCart,
+    setQuickAddProduct,
     subtotal,
     discountCode,
     discountPercent,
@@ -36,6 +41,42 @@ export default function CartDrawer() {
 
   const [inputCode, setInputCode] = useState("");
   const [isApplying, setIsApplying] = useState(false);
+  const carouselRef = useRef(null);
+
+  const scrollSuggestions = (direction) => {
+    if (carouselRef.current) {
+      const scrollAmount = direction === "left" ? -240 : 240;
+      carouselRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
+    }
+  };
+
+  // Get suggested items not currently in cart
+  const cartProductIds = new Set(cart.map((item) => item.productId));
+  const suggestedProducts = PRODUCTS.filter((p) => !cartProductIds.has(p.id)).slice(0, 8);
+
+  // Lock body scrolling when cart drawer is open
+  React.useEffect(() => {
+    if (isCartOpen) {
+      const originalOverflow = document.body.style.overflow;
+      const originalPosition = document.body.style.position;
+      const originalTop = document.body.style.top;
+      const originalWidth = document.body.style.width;
+      const scrollY = window.scrollY;
+
+      document.body.style.overflow = "hidden";
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = "100%";
+
+      return () => {
+        document.body.style.overflow = originalOverflow;
+        document.body.style.position = originalPosition;
+        document.body.style.top = originalTop;
+        document.body.style.width = originalWidth;
+        window.scrollTo(0, scrollY);
+      };
+    }
+  }, [isCartOpen]);
 
   if (!isCartOpen) return null;
 
@@ -50,18 +91,19 @@ export default function CartDrawer() {
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-hidden">
+    <div className="fixed inset-0 z-50 overflow-hidden overscroll-none touch-none">
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity duration-300"
+        className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity duration-300 touch-none"
         onClick={() => setIsCartOpen(false)}
+        onTouchMove={(e) => e.preventDefault()}
       />
 
-      <div className="fixed inset-y-0 right-0 max-w-full flex pl-10">
+      <div className="fixed inset-y-0 right-0 max-w-full flex pl-10 touch-auto">
         <div className="w-screen max-w-md bg-white shadow-2xl flex flex-col z-50">
           
           {/* Header */}
-          <div className="px-5 py-4 border-b border-neutral-100 flex items-center justify-between">
+          <div className="px-5 py-4 border-b border-neutral-100 flex items-center justify-between shrink-0">
             <div className="flex items-center space-x-2">
               <ShoppingBag className="w-5 h-5 text-[#11716c]" />
               <h2 className="text-sm font-bold tracking-wider uppercase text-neutral-900">
@@ -71,20 +113,26 @@ export default function CartDrawer() {
             <button
               onClick={() => setIsCartOpen(false)}
               aria-label="Close cart drawer"
-              className="p-1.5 text-neutral-400 hover:text-neutral-900 rounded-full hover:bg-neutral-100 transition-colors"
+              className="p-1.5 text-neutral-400 hover:text-neutral-900 rounded-full hover:bg-neutral-100 transition-colors cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
           </div>
 
           {/* Pan-India Free Shipping Banner */}
-          <div className="bg-[#11716c]/10 text-[#11716c] px-5 py-2.5 text-xs font-semibold flex items-center gap-2 border-b border-[#11716c]/20">
+          <div className="bg-[#11716c]/10 text-[#11716c] px-5 py-2.5 text-xs font-semibold flex items-center gap-2 border-b border-[#11716c]/20 shrink-0">
             <Truck className="w-4 h-4 shrink-0" />
             <span>Pan-India Free Express Shipping Unlocked!</span>
           </div>
 
           {/* Cart Items List */}
-          <div className="flex-1 overflow-y-auto p-5 space-y-4">
+          <div
+            className="flex-1 overflow-y-auto p-5 space-y-4 overscroll-contain"
+            style={{
+              overscrollBehavior: "contain",
+              WebkitOverflowScrolling: "touch"
+            }}
+          >
             {cart.length === 0 ? (
               <div className="h-full flex flex-col items-center justify-center text-center py-12 space-y-4">
                 <div className="w-16 h-16 rounded-full bg-neutral-100 flex items-center justify-center text-neutral-400">
@@ -182,6 +230,117 @@ export default function CartDrawer() {
                   </div>
                 </div>
               ))
+            )}
+
+            {/* "You may also like..." Suggestions Section (FIRVT Style) */}
+            {suggestedProducts.length > 0 && (
+              <div className="pt-5 pb-2 border-t border-neutral-100">
+                <div className="flex items-center justify-between mb-2.5">
+                  <h3 className="text-xs sm:text-sm font-bold text-neutral-900 tracking-tight">
+                    You may also like...
+                  </h3>
+                  <div className="flex items-center gap-1.5">
+                    <button
+                      type="button"
+                      onClick={() => scrollSuggestions("left")}
+                      aria-label="Previous suggestions"
+                      className="w-6 h-6 rounded-full border border-neutral-200 bg-white flex items-center justify-center text-neutral-600 hover:text-black hover:border-neutral-400 shadow-2xs transition-colors cursor-pointer"
+                    >
+                      <ChevronLeft className="w-3.5 h-3.5" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => scrollSuggestions("right")}
+                      aria-label="Next suggestions"
+                      className="w-6 h-6 rounded-full border border-neutral-200 bg-white flex items-center justify-center text-neutral-600 hover:text-black hover:border-neutral-400 shadow-2xs transition-colors cursor-pointer"
+                    >
+                      <ChevronRight className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Horizontal Scrolling Suggestion Cards */}
+                <div
+                  ref={carouselRef}
+                  className="flex gap-2.5 overflow-x-auto pb-2 pt-0.5"
+                  style={{
+                    scrollbarWidth: "none",
+                    msOverflowStyle: "none",
+                    WebkitOverflowScrolling: "touch"
+                  }}
+                >
+                  {suggestedProducts.map((p) => {
+                    const discount = p.originalPrice && p.originalPrice > p.price
+                      ? Math.round(((p.originalPrice - p.price) / p.originalPrice) * 100)
+                      : null;
+
+                    return (
+                      <div
+                        key={p.id}
+                        className="w-[215px] sm:w-[235px] shrink-0 border border-neutral-200 rounded-lg p-2.5 bg-white flex flex-col justify-between shadow-2xs hover:border-neutral-300 transition-colors"
+                      >
+                        <div className="flex gap-2.5 items-start">
+                          <div className="w-14 h-14 rounded-xs overflow-hidden bg-neutral-100 shrink-0 border border-neutral-100">
+                            <img
+                              src={p.primaryImage}
+                              alt={p.name}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+
+                          <div className="flex-1 min-w-0">
+                            <Link
+                              href={`/products/${p.id}`}
+                              onClick={() => setIsCartOpen(false)}
+                              className="block text-[11px] font-bold text-neutral-900 uppercase leading-snug line-clamp-2 hover:text-[#11716c] transition-colors"
+                            >
+                              {p.name}
+                            </Link>
+
+                            <div className="pt-1">
+                              {p.originalPrice && p.originalPrice > p.price && (
+                                <span className="text-[10px] text-neutral-400 line-through mr-1 font-normal">
+                                  {formatPrice(p.originalPrice)}
+                                </span>
+                              )}
+                              <span className="text-xs font-bold text-neutral-900">
+                                {formatPrice(p.price)}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Bottom Row: Black Discount Pill + Add Button */}
+                        <div className="flex items-center justify-between gap-2 pt-2 mt-2 border-t border-neutral-100">
+                          {discount ? (
+                            <span className="bg-black text-white text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider leading-none">
+                              {discount}% off
+                            </span>
+                          ) : (
+                            <span className="bg-[#11716c] text-white text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider leading-none">
+                              NEW
+                            </span>
+                          )}
+
+                          <button
+                            type="button"
+                            onClick={() => {
+                              if (setQuickAddProduct) {
+                                setQuickAddProduct(p);
+                              } else {
+                                addToCart(p, p.sizes?.[0] || "L", 1);
+                              }
+                            }}
+                            className="border border-neutral-300 hover:border-neutral-900 text-neutral-800 hover:text-black bg-white px-3.5 py-1 rounded-full text-[11px] font-semibold transition-all flex items-center justify-center cursor-pointer active:scale-95"
+                          >
+                            + Add
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
             )}
           </div>
 

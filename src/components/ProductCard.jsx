@@ -7,7 +7,7 @@ import { useCart } from "@/context/CartContext";
 import { ShoppingBag, Star, Check } from "lucide-react";
 
 export default function ProductCard({ product }) {
-  const { addToCart } = useCart();
+  const { addToCart, setQuickAddProduct } = useCart();
   const [isHovered, setIsHovered] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
 
@@ -56,15 +56,15 @@ export default function ProductCard({ product }) {
           )}
         </Link>
 
-        {/* Badges */}
-        <div className="absolute top-2.5 left-2.5 flex flex-col gap-1 z-10 pointer-events-none">
+        {/* Badges (FIRVT Pill Style) */}
+        <div className="absolute top-2.5 left-2.5 flex flex-col gap-1.5 z-10 pointer-events-none">
           {discountPercent && (
-            <span className="bg-[#d63f45] text-white text-[10px] font-bold px-2 py-0.5 uppercase tracking-wider">
+            <span className="bg-[#cc3333] text-white text-[10px] font-bold px-3 py-1 uppercase tracking-wider font-sans rounded-full shadow-xs leading-none inline-flex items-center justify-center">
               {discountPercent}% OFF
             </span>
           )}
           {product.isNew && (
-            <span className="bg-[#11716c] text-white text-[10px] font-bold px-2 py-0.5 uppercase tracking-wider">
+            <span className="bg-[#11716c] text-white text-[10px] font-bold px-3 py-1 uppercase tracking-wider font-sans rounded-full shadow-xs leading-none inline-flex items-center justify-center">
               NEW
             </span>
           )}
@@ -79,7 +79,7 @@ export default function ProductCard({ product }) {
           <span className="text-[10px] uppercase font-bold text-neutral-500 mr-1 tracking-wider">
             Quick Add:
           </span>
-          {product.sizes.slice(0, 5).map((size) => (
+          {product.sizes.slice(0, 4).map((size) => (
             <button
               key={size}
               onClick={(e) => handleQuickAdd(e, size)}
@@ -88,61 +88,88 @@ export default function ProductCard({ product }) {
               {size}
             </button>
           ))}
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setQuickAddProduct(product);
+            }}
+            className="px-2.5 py-1 text-[11px] font-bold border border-neutral-900 bg-neutral-900 text-white hover:bg-[#11716c] hover:border-[#11716c] transition-all cursor-pointer"
+            title="More Sizes"
+          >
+            All Sizes
+          </button>
         </div>
-
-        {/* Mobile Quick Add Button */}
-        <button
-          onClick={(e) => handleQuickAdd(e, product.sizes?.[0] || "L")}
-          aria-label="Add to cart"
-          className="sm:hidden absolute bottom-2 right-2 bg-white/95 p-2 rounded-full shadow-md text-neutral-900 active:scale-95 z-20 cursor-pointer"
-        >
-          {isAdded ? (
-            <Check className="w-4 h-4 text-[#11716c]" />
-          ) : (
-            <ShoppingBag className="w-4 h-4" />
-          )}
-        </button>
       </div>
 
-      {/* Product Details */}
-      <div className="pt-3 pb-2 flex flex-col space-y-1">
-        {/* Star Rating */}
-        <div className="flex items-center gap-1 text-[#f59e0b] text-[11px]">
-          <div className="flex items-center">
-            {[...Array(5)].map((_, i) => (
-              <Star
-                key={i}
-                className={`w-3 h-3 ${
-                  i < 4 || (product.rating && product.rating >= 4.8)
-                    ? "fill-[#f59e0b] text-[#f59e0b]"
-                    : "fill-neutral-200 text-neutral-200"
-                }`}
-              />
-            ))}
-          </div>
-          <span className="text-neutral-500 font-medium text-[11px] ml-1">
-            {product.rating || 4.8} ({product.reviewsCount || 34})
-          </span>
-        </div>
-
-        {/* Product Title */}
-        <Link href={`/products/${product.id}`} className="group-hover:text-[#11716c] transition-colors">
-          <h3 className="text-xs sm:text-[13px] font-bold text-neutral-900 leading-snug line-clamp-1 uppercase tracking-wide">
-            {product.name}
-          </h3>
-        </Link>
-
-        {/* Pricing */}
-        <div className="flex items-center gap-2 pt-0.5">
-          <span className="text-sm font-bold text-neutral-900">
-            {formatPrice(product.price)}
-          </span>
-          {product.originalPrice && product.originalPrice > product.price && (
-            <span className="text-xs text-neutral-400 line-through font-normal">
-              {formatPrice(product.originalPrice)}
+      {/* Product Details & Action (FIRVT Style) */}
+      <div className="pt-3 pb-2 flex items-start justify-between gap-2">
+        <div className="flex-1 min-w-0 flex flex-col space-y-1">
+          {/* Star Rating */}
+          <div className="flex items-center gap-1 text-[#f59e0b] text-[11px]">
+            <div className="flex items-center">
+              {[...Array(5)].map((_, i) => (
+                <Star
+                  key={i}
+                  className={`w-3 h-3 ${
+                    i < 4 || (product.rating && product.rating >= 4.8)
+                      ? "fill-[#f59e0b] text-[#f59e0b]"
+                      : "fill-neutral-200 text-neutral-200"
+                  }`}
+                />
+              ))}
+            </div>
+            <span className="text-neutral-500 font-medium text-[11px] ml-1">
+              {product.rating || 4.8} ({product.reviewsCount || 34})
             </span>
-          )}
+          </div>
+
+          {/* Product Title */}
+          <Link href={`/products/${product.id}`} className="group-hover:text-[#11716c] transition-colors">
+            <h3 className="text-xs sm:text-[13px] font-bold text-neutral-900 leading-snug line-clamp-2 uppercase tracking-wide">
+              {product.name}
+            </h3>
+          </Link>
+
+          {/* Pricing */}
+          <div className="flex items-center gap-2 pt-0.5">
+            <span className="text-sm font-bold text-neutral-900">
+              {formatPrice(product.price)}
+            </span>
+            {product.originalPrice && product.originalPrice > product.price && (
+              <span className="text-xs text-neutral-400 line-through font-normal">
+                {formatPrice(product.originalPrice)}
+              </span>
+            )}
+          </div>
         </div>
+
+        {/* Bag with Plus Button matching FIRVT */}
+        <button
+          type="button"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            setQuickAddProduct(product);
+          }}
+          aria-label={`Add ${product.name} to cart`}
+          className="shrink-0 p-1.5 text-neutral-800 hover:text-[#11716c] transition-colors cursor-pointer active:scale-90 self-center"
+        >
+          <svg
+            className="w-5 h-5 sm:w-5.5 sm:h-5.5"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M7 8V6a5 5 0 0 1 10 0v2" />
+            <rect x="3" y="8" width="18" height="13" rx="3" />
+            <line x1="12" y1="12" x2="12" y2="17" />
+            <line x1="9.5" y1="14.5" x2="14.5" y2="14.5" />
+          </svg>
+        </button>
       </div>
     </div>
   );

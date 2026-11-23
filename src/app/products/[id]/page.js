@@ -137,13 +137,13 @@ export default function ProductDetailPage({ params }) {
               {/* Badges */}
               <div className="absolute top-4 left-4 flex flex-col gap-2 pointer-events-none">
                 {product.tag && (
-                  <span className="bg-[#11716c] text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm">
+                  <span className="bg-[#11716c] text-white text-xs font-bold px-3.5 py-1 rounded-full uppercase tracking-wider font-sans shadow-sm leading-none inline-flex items-center">
                     {product.tag}
                   </span>
                 )}
                 {discountPercent && (
-                  <span className="bg-[#d63f45] text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm">
-                    SAVE {discountPercent}%
+                  <span className="bg-[#cc3333] text-white text-xs font-bold px-3.5 py-1 rounded-full uppercase tracking-wider font-sans shadow-sm leading-none inline-flex items-center">
+                    {discountPercent}% OFF
                   </span>
                 )}
               </div>
