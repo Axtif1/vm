@@ -567,7 +567,7 @@ export default function AdminDashboardPage() {
               <div style={{ fontSize: "9px", fontWeight: "800", letterSpacing: "0.15em", color: "#11716c", textTransform: "uppercase" }}>
                 CONSOLE
               </div>
-              <div className="admin-sidebar-brand-title">
+              <div className="admin-brand-title">
                 V-MIND ADMIN
               </div>
             </div>
@@ -576,67 +576,66 @@ export default function AdminDashboardPage() {
             onClick={() => setIsSidebarOpen(false)}
             style={{ background: "none", border: "none", color: "#94a3b8", cursor: "pointer", display: "flex" }}
             className="lg:hidden"
+            aria-label="Close sidebar"
           >
-            <X style={{ width: "20px", height: "20px" }} />
+            <X style={{ width: "18px", height: "18px" }} />
           </button>
         </div>
 
-        {/* Navigation Links Area (Fitted Without Scrolling) */}
-        <div className="admin-sidebar-scrollable">
-          <nav className="admin-sidebar-nav">
-            {[
-              { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
-              { id: "herobanner", label: "Hero Video Banner", icon: Clapperboard },
-              { id: "navigation", label: "Navbar Menu", icon: Compass, badge: headerNavLinks.length },
-              { id: "products", label: "Products", icon: Package, badge: products.length },
-              { id: "orders", label: "Orders", icon: ShoppingBag, badge: orders.filter(o => o.status === "Processing").length },
-              { id: "campaign", label: "Campaign Banner", icon: Sparkles },
-              { id: "categories", label: "Category Tiles", icon: LayoutGrid, badge: categorySection.tiles.length },
-              { id: "sizeguide", label: "Size Guide", icon: Ruler, badge: sizeGuide.rows.length },
-              { id: "discounts", label: "Discounts & Promo", icon: Tag, badge: coupons.length },
-              { id: "media", label: "Media & Cloudinary", icon: Film },
-              { id: "settings", label: "Store Settings", icon: Settings }
-            ].map((item) => {
-              const Icon = item.icon;
-              const isActive = activeTab === item.id;
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => {
-                    setActiveTab(item.id);
-                    setIsSidebarOpen(false);
-                  }}
-                  className={`admin-sidebar-nav-item ${isActive ? "active" : ""}`}
-                >
-                  <div style={{ display: "flex", alignItems: "center", gap: "9px" }}>
-                    <Icon className="admin-nav-icon" style={{ width: "15px", height: "15px" }} />
-                    <span style={{ whiteSpace: "nowrap" }}>{item.label}</span>
-                  </div>
-                  {item.badge !== undefined && (
-                    <span className={`admin-nav-badge ${isActive ? "active" : ""}`}>
-                      {item.badge}
-                    </span>
-                  )}
-                </button>
-              );
-            })}
-          </nav>
-        </div>
+        {/* Navigation Links Area (Clean, zero unnecessary scroll) */}
+        <nav className="admin-sidebar-nav">
+          {[
+            { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
+            { id: "herobanner", label: "Hero Video Banner", icon: Clapperboard },
+            { id: "navigation", label: "Navbar Menu", icon: Compass, badge: headerNavLinks.length },
+            { id: "products", label: "Products", icon: Package, badge: products.length },
+            { id: "orders", label: "Orders", icon: ShoppingBag, badge: orders.filter(o => o.status === "Processing").length },
+            { id: "campaign", label: "Campaign Banner", icon: Sparkles },
+            { id: "categories", label: "Category Tiles", icon: LayoutGrid, badge: categorySection.tiles.length },
+            { id: "sizeguide", label: "Size Guide", icon: Ruler, badge: sizeGuide.rows.length },
+            { id: "discounts", label: "Discounts & Promo", icon: Tag, badge: coupons.length },
+            { id: "media", label: "Media & Cloudinary", icon: Film },
+            { id: "settings", label: "Store Settings", icon: Settings }
+          ].map((item) => {
+            const Icon = item.icon;
+            const isActive = activeTab === item.id;
+            return (
+              <button
+                key={item.id}
+                onClick={() => {
+                  setActiveTab(item.id);
+                  setIsSidebarOpen(false);
+                }}
+                className={`admin-sidebar-nav-item ${isActive ? "active" : ""}`}
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: "9px" }}>
+                  <Icon style={{ width: "15px", height: "15px" }} />
+                  <span>{item.label}</span>
+                </div>
+                {item.badge !== undefined && (
+                  <span className={`admin-sidebar-badge ${isActive ? "active" : ""}`}>
+                    {item.badge}
+                  </span>
+                )}
+              </button>
+            );
+          })}
+        </nav>
 
-        {/* Sidebar Footer (Fixed Bottom, Compact) */}
+        {/* Sidebar Footer (Fixed Bottom) */}
         <div className="admin-sidebar-footer">
-          <div className="admin-sidebar-store-info">
-            <span style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-              <span className="admin-live-dot" />
-              <span className="admin-live-text">Live Store</span>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", fontSize: "10px", color: "#64748b" }}>
+            <span style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+              <span style={{ width: "7px", height: "7px", borderRadius: "9999px", backgroundColor: "#10b981", display: "inline-block" }} />
+              Live Store
             </span>
-            <span className="admin-live-loc">Jaipur, IN</span>
+            <span style={{ fontSize: "9px", fontWeight: "700", textTransform: "uppercase" }}>Jaipur, IN</span>
           </div>
 
           <Link
             href="/"
             target="_blank"
-            className="admin-storefront-link"
+            className="admin-outline-btn admin-view-store-btn"
           >
             <span>View Storefront</span>
             <ExternalLink style={{ width: "12px", height: "12px" }} />
