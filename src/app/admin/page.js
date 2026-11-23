@@ -562,12 +562,12 @@ export default function AdminDashboardPage() {
         {/* Brand & Console Title (Fixed Top) */}
         <div className="admin-sidebar-header">
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <Logo variant="header" style={{ height: "36px", width: "auto" }} />
+            <Logo variant={adminTheme === "light" ? "dark" : "header"} style={{ height: "30px", width: "auto" }} />
             <div>
               <div style={{ fontSize: "9px", fontWeight: "800", letterSpacing: "0.15em", color: "#11716c", textTransform: "uppercase" }}>
                 CONSOLE
               </div>
-              <div style={{ fontSize: "12px", fontWeight: "800", letterSpacing: "0.05em", color: "#ffffff" }}>
+              <div className="admin-sidebar-brand-title">
                 V-MIND ADMIN
               </div>
             </div>
@@ -581,7 +581,7 @@ export default function AdminDashboardPage() {
           </button>
         </div>
 
-        {/* Scrollable Navigation Links Area */}
+        {/* Navigation Links Area (Fitted Without Scrolling) */}
         <div className="admin-sidebar-scrollable">
           <nav className="admin-sidebar-nav">
             {[
@@ -608,21 +608,12 @@ export default function AdminDashboardPage() {
                   }}
                   className={`admin-sidebar-nav-item ${isActive ? "active" : ""}`}
                 >
-                  <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                    <Icon style={{ width: "16px", height: "16px" }} />
-                    <span>{item.label}</span>
+                  <div style={{ display: "flex", alignItems: "center", gap: "9px" }}>
+                    <Icon className="admin-nav-icon" style={{ width: "15px", height: "15px" }} />
+                    <span style={{ whiteSpace: "nowrap" }}>{item.label}</span>
                   </div>
                   {item.badge !== undefined && (
-                    <span
-                      style={{
-                        fontSize: "10px",
-                        padding: "2px 7px",
-                        borderRadius: "9999px",
-                        fontWeight: "700",
-                        backgroundColor: isActive ? "rgba(0,0,0,0.4)" : "#1e2633",
-                        color: "#ffffff"
-                      }}
-                    >
+                    <span className={`admin-nav-badge ${isActive ? "active" : ""}`}>
                       {item.badge}
                     </span>
                   )}
@@ -632,50 +623,23 @@ export default function AdminDashboardPage() {
           </nav>
         </div>
 
-        {/* Sidebar Footer (Fixed Bottom) */}
+        {/* Sidebar Footer (Fixed Bottom, Compact) */}
         <div className="admin-sidebar-footer">
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", fontSize: "11px", color: "#64748b" }}>
+          <div className="admin-sidebar-store-info">
             <span style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-              <span style={{ width: "8px", height: "8px", borderRadius: "9999px", backgroundColor: "#10b981", display: "inline-block" }} />
-              Live Store
+              <span className="admin-live-dot" />
+              <span className="admin-live-text">Live Store</span>
             </span>
-            <span style={{ fontSize: "10px", fontWeight: "700", textTransform: "uppercase" }}>Jaipur, IN</span>
-          </div>
-
-          {/* Smooth Theme Preference Switcher (Sidebar) */}
-          <div className="admin-sidebar-theme-container">
-            <div className="admin-sidebar-theme-header">
-              <span>Theme Preference</span>
-              <span className="admin-sidebar-theme-badge">{adminTheme}</span>
-            </div>
-            <div className="admin-sidebar-theme-pills">
-              <button
-                type="button"
-                onClick={() => handleSetTheme("dark")}
-                className={`admin-sidebar-pill ${adminTheme === "dark" ? "active" : ""}`}
-              >
-                <Moon style={{ width: "12px", height: "12px" }} />
-                <span>Dark</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => handleSetTheme("light")}
-                className={`admin-sidebar-pill ${adminTheme === "light" ? "active" : ""}`}
-              >
-                <Sun style={{ width: "12px", height: "12px" }} />
-                <span>Light</span>
-              </button>
-            </div>
+            <span className="admin-live-loc">Jaipur, IN</span>
           </div>
 
           <Link
             href="/"
             target="_blank"
-            className="admin-outline-btn"
-            style={{ width: "100%", justifyContent: "center", textDecoration: "none" }}
+            className="admin-storefront-link"
           >
             <span>View Storefront</span>
-            <ExternalLink style={{ width: "13px", height: "13px" }} />
+            <ExternalLink style={{ width: "12px", height: "12px" }} />
           </Link>
         </div>
       </aside>
