@@ -134,6 +134,7 @@ export default function AdminDashboardPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [adminTheme, setAdminTheme] = useState("dark");
+  const [themeToast, setThemeToast] = useState(null);
 
   // Persistent State
   const [products, setProducts] = useState(PRODUCTS);
@@ -214,12 +215,19 @@ export default function AdminDashboardPage() {
     }
   }, []);
 
+  const handleSetTheme = (themeName) => {
+    if (adminTheme === themeName) return;
+    setAdminTheme(themeName);
+    try {
+      localStorage.setItem("vmind_admin_theme", themeName);
+    } catch (err) {}
+    setThemeToast(themeName === "dark" ? "Switched to Dark Mode" : "Switched to Light Mode");
+    setTimeout(() => setThemeToast(null), 2200);
+  };
+
   const toggleTheme = () => {
     const nextTheme = adminTheme === "dark" ? "light" : "dark";
-    setAdminTheme(nextTheme);
-    try {
-      localStorage.setItem("vmind_admin_theme", nextTheme);
-    } catch (err) {}
+    handleSetTheme(nextTheme);
   };
 
   const handleSaveCategories = (e) => {
@@ -529,6 +537,18 @@ export default function AdminDashboardPage() {
 
   return (
     <div className="admin-shell" data-theme={adminTheme}>
+      {/* Smooth Theme Preference Micro-Toast */}
+      {themeToast && (
+        <div className="admin-theme-toast">
+          {themeToast.includes("Dark") ? (
+            <Moon style={{ width: "13px", height: "13px", color: "#11716c" }} />
+          ) : (
+            <Sun style={{ width: "13px", height: "13px", color: "#f59e0b" }} />
+          )}
+          <span>{themeToast}</span>
+        </div>
+      )}
+
       {/* Mobile Drawer Backdrop */}
       {isSidebarOpen && (
         <div
@@ -622,25 +642,31 @@ export default function AdminDashboardPage() {
             <span style={{ fontSize: "10px", fontWeight: "700", textTransform: "uppercase" }}>Jaipur, IN</span>
           </div>
 
-          {/* Theme button only in admin panel (Sidebar) */}
-          <button
-            type="button"
-            onClick={toggleTheme}
-            className="admin-sidebar-theme-btn"
-            title={`Switch to ${adminTheme === "dark" ? "Light" : "Dark"} Mode`}
-          >
-            <span style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-              {adminTheme === "dark" ? (
-                <Sun style={{ width: "13px", height: "13px", color: "#f59e0b" }} />
-              ) : (
-                <Moon style={{ width: "13px", height: "13px", color: "#11716c" }} />
-              )}
-              <span>Theme:</span>
-            </span>
-            <span style={{ fontWeight: 800, textTransform: "uppercase" }}>
-              {adminTheme === "dark" ? "Dark" : "Light"}
-            </span>
-          </button>
+          {/* Smooth Theme Preference Switcher (Sidebar) */}
+          <div className="admin-sidebar-theme-container">
+            <div className="admin-sidebar-theme-header">
+              <span>Theme Preference</span>
+              <span className="admin-sidebar-theme-badge">{adminTheme}</span>
+            </div>
+            <div className="admin-sidebar-theme-pills">
+              <button
+                type="button"
+                onClick={() => handleSetTheme("dark")}
+                className={`admin-sidebar-pill ${adminTheme === "dark" ? "active" : ""}`}
+              >
+                <Moon style={{ width: "12px", height: "12px" }} />
+                <span>Dark</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => handleSetTheme("light")}
+                className={`admin-sidebar-pill ${adminTheme === "light" ? "active" : ""}`}
+              >
+                <Sun style={{ width: "12px", height: "12px" }} />
+                <span>Light</span>
+              </button>
+            </div>
+          </div>
 
           <Link
             href="/"
@@ -696,26 +722,31 @@ export default function AdminDashboardPage() {
               />
             </div>
 
-            {/* Theme button only in admin panel */}
-            <button
-              type="button"
-              onClick={toggleTheme}
-              className="admin-theme-toggle-btn"
-              title={`Switch to ${adminTheme === "dark" ? "Light" : "Dark"} Mode`}
-              aria-label="Toggle admin panel theme"
-            >
-              {adminTheme === "dark" ? (
-                <>
-                  <Sun style={{ width: "14px", height: "14px", color: "#f59e0b" }} />
-                  <span className="hidden sm:inline">Light Mode</span>
-                </>
-              ) : (
-                <>
-                  <Moon style={{ width: "14px", height: "14px", color: "#11716c" }} />
-                  <span className="hidden sm:inline">Dark Mode</span>
-                </>
-              )}
-            </button>
+            {/* Smooth Theme Preference Switcher (Header Segmented) */}
+            <div className="admin-theme-segmented" role="radiogroup" aria-label="Theme preference">
+              <button
+                type="button"
+                onClick={() => handleSetTheme("dark")}
+                className={`admin-theme-seg-btn ${adminTheme === "dark" ? "active" : ""}`}
+                title="Activate Dark Mode"
+                aria-checked={adminTheme === "dark"}
+                role="radio"
+              >
+                <Moon style={{ width: "13px", height: "13px" }} className="theme-icon" />
+                <span className="hidden sm:inline">Dark</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => handleSetTheme("light")}
+                className={`admin-theme-seg-btn ${adminTheme === "light" ? "active" : ""}`}
+                title="Activate Light Mode"
+                aria-checked={adminTheme === "light"}
+                role="radio"
+              >
+                <Sun style={{ width: "13px", height: "13px" }} className="theme-icon" />
+                <span className="hidden sm:inline">Light</span>
+              </button>
+            </div>
 
             {activeTab === "herobanner" && (
               <button
