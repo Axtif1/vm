@@ -21,6 +21,31 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [navLinks, setNavLinks] = useState(NAV_LINKS);
+
+  // Hydrate custom navigation links if edited via Admin
+  useEffect(() => {
+    const loadNavLinks = () => {
+      try {
+        const saved = localStorage.getItem("vmind_nav_links");
+        if (saved) {
+          setNavLinks(JSON.parse(saved));
+        }
+      } catch (e) {
+        console.error("Failed to load nav links", e);
+      }
+    };
+
+    loadNavLinks();
+
+    window.addEventListener("storage", loadNavLinks);
+    window.addEventListener("vmind_nav_updated", loadNavLinks);
+
+    return () => {
+      window.removeEventListener("storage", loadNavLinks);
+      window.removeEventListener("vmind_nav_updated", loadNavLinks);
+    };
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -94,7 +119,7 @@ export default function Header() {
 
             {/* Desktop Navigation Links */}
             <nav className="hidden lg:flex items-center space-x-6 xl:space-x-8">
-              {NAV_LINKS.map((link) => {
+              {navLinks.map((link) => {
                 const hasChildren = Boolean(link.children && link.children.length > 0);
                 const isActive = pathname === link.href;
 
@@ -166,8 +191,8 @@ export default function Header() {
 
               {/* User Account / Profile */}
               <Link
-                href="/shop"
-                aria-label="Account"
+                href="/login"
+                aria-label="Account & Login"
                 className="hidden sm:flex p-2 text-white hover:text-[#11716c] transition-colors"
               >
                 <User className="w-5 h-5" />
@@ -221,6 +246,18 @@ export default function Header() {
               </button>
             </div>
 
+            {/* User Account / Sign In CTA for Mobile */}
+            <div className="p-3 border-b border-neutral-800 shrink-0">
+              <Link
+                href="/login"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center justify-center gap-2 w-full py-2.5 px-4 rounded-full bg-[#11716c] text-white text-xs font-bold tracking-widest uppercase hover:bg-[#0e5c58] transition-colors shadow-sm"
+              >
+                <User className="w-4 h-4" />
+                <span>My Account / Sign In</span>
+              </Link>
+            </div>
+
             {/* Links List */}
             <div
               className="flex-1 overflow-y-auto py-4 px-4 space-y-1 overscroll-contain"
@@ -229,7 +266,7 @@ export default function Header() {
                 WebkitOverflowScrolling: "touch"
               }}
             >
-              {NAV_LINKS.map((link) => {
+              {navLinks.map((link) => {
                 const hasChildren = Boolean(link.children && link.children.length > 0);
 
                 if (hasChildren) {

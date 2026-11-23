@@ -101,7 +101,7 @@ export default function ContactPage() {
                   <span>4-Day Hassle-Free Exchange</span>
                 </div>
                 <p>
-                  If you need a different size or fit, we happily exchange any unworn, unwashed item with tags attached within 7 days of delivery.
+                  If you need a different size or fit, we happily exchange any unworn, unwashed item with tags attached within 4 days of delivery.
                 </p>
               </div>
 

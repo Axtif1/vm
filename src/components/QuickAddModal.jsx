@@ -4,15 +4,39 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/context/CartContext";
 import { formatPrice } from "@/utils/currency";
-import { X, Check } from "lucide-react";
+import { DEFAULT_SIZE_GUIDE } from "@/data/sizeGuide";
+import { X, Check, Ruler } from "lucide-react";
 
 export default function QuickAddModal() {
   const router = useRouter();
   const { quickAddProduct, setQuickAddProduct, addToCart, setIsCartOpen } = useCart();
   const [selectedSize, setSelectedSize] = useState("XS");
   const [isAdding, setIsAdding] = useState(false);
+  const [showSizeModal, setShowSizeModal] = useState(false);
+  const [sizeGuide, setSizeGuide] = useState(DEFAULT_SIZE_GUIDE);
 
   const ALL_SIZES = ["XS", "S", "M", "L", "XL", "XXL", "XXXL"];
+
+  // Hydrate size guide
+  useEffect(() => {
+    const loadSizeGuide = () => {
+      try {
+        const saved = localStorage.getItem("vmind_size_guide");
+        if (saved) {
+          setSizeGuide({ ...DEFAULT_SIZE_GUIDE, ...JSON.parse(saved) });
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    loadSizeGuide();
+    window.addEventListener("storage", loadSizeGuide);
+    window.addEventListener("vmind_sizeguide_updated", loadSizeGuide);
+    return () => {
+      window.removeEventListener("storage", loadSizeGuide);
+      window.removeEventListener("vmind_sizeguide_updated", loadSizeGuide);
+    };
+  }, []);
 
   // Default to first size available on product or "XS"
   useEffect(() => {
@@ -119,9 +143,19 @@ export default function QuickAddModal() {
 
         {/* Size Selection Section */}
         <div className="py-2">
-          <p className="text-xs sm:text-sm font-semibold text-neutral-800 mb-2.5">
-            Select Size
-          </p>
+          <div className="flex items-center justify-between mb-2.5">
+            <p className="text-xs sm:text-sm font-semibold text-neutral-800">
+              Select Size
+            </p>
+            <button
+              type="button"
+              onClick={() => setShowSizeModal(true)}
+              className="inline-flex items-center gap-1 text-xs text-[#11716c] hover:underline font-bold uppercase tracking-wide cursor-pointer"
+            >
+              <Ruler className="w-3.5 h-3.5" />
+              <span>{sizeGuide.buttonText || "Size Guide"}</span>
+            </button>
+          </div>
 
           <div className="flex flex-wrap gap-2.5">
             {sizes.map((size) => {
@@ -172,6 +206,67 @@ export default function QuickAddModal() {
           </button>
         </div>
       </div>
+
+      {/* Nested Size Guide Modal */}
+      {showSizeModal && (
+        <div className="fixed inset-0 z-60 overflow-y-auto flex items-center justify-center p-4">
+          <div className="fixed inset-0 bg-black/60 backdrop-blur-xs" onClick={() => setShowSizeModal(false)} />
+          <div className="relative bg-white max-w-lg w-full rounded-2xl shadow-2xl p-6 z-60 space-y-5">
+            <div className="flex items-center justify-between border-b border-neutral-200 pb-3">
+              <div className="flex items-center gap-2">
+                <Ruler className="w-5 h-5 text-[#11716c]" />
+                <h3 className="text-sm font-bold uppercase tracking-wider text-neutral-900">
+                  {sizeGuide.modalTitle || "Size Guide"} &bull; In {sizeGuide.unit || "Inches"}
+                </h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowSizeModal(false)}
+                className="p-1 rounded-full text-neutral-400 hover:text-neutral-900 cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="overflow-x-auto">
+              <table className="w-full text-xs text-left">
+                <thead className="bg-neutral-100 text-neutral-800 font-bold uppercase">
+                  <tr>
+                    <th className="p-2.5">Size</th>
+                    <th className="p-2.5">Chest ({sizeGuide.unit || "Inches"})</th>
+                    <th className="p-2.5">Length ({sizeGuide.unit || "Inches"})</th>
+                    <th className="p-2.5">Shoulder ({sizeGuide.unit || "Inches"})</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-neutral-100 text-neutral-600 font-medium">
+                  {sizeGuide.rows?.map((row) => (
+                    <tr key={row.size}>
+                      <td className="p-2.5 font-bold text-neutral-900">{row.size}</td>
+                      <td className="p-2.5">{row.chest}</td>
+                      <td className="p-2.5">{row.length}</td>
+                      <td className="p-2.5">{row.shoulder}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {sizeGuide.note && (
+              <p className="text-[11px] text-neutral-500 italic">
+                {sizeGuide.note}
+              </p>
+            )}
+
+            <button
+              type="button"
+              onClick={() => setShowSizeModal(false)}
+              className="firvt-pill-btn w-full bg-[#11716c] hover:bg-[#0c5652] text-white py-2.5 text-xs font-bold rounded-full cursor-pointer transition-colors"
+            >
+              Got It
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

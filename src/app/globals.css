@@ -87,3 +87,13 @@ body {
   text-transform: uppercase;
   transition: all 0.25s ease;
 }
+
+/* Hide Next.js floating development indicator badge */
+nextjs-portal,
+[data-nextjs-toast],
+[data-next-dev-tools-indicator],
+[data-nextjs-dev-tools-indicator] {
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}

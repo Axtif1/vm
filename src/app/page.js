@@ -6,6 +6,7 @@ import { PRODUCTS } from "@/data/products";
 import ProductCard from "@/components/ProductCard";
 import HeroBanner from "@/components/HeroBanner";
 import BrandFeatures from "@/components/BrandFeatures";
+import CategoryTiles from "@/components/CategoryTiles";
 import WinterBanner from "@/components/WinterBanner";
 import VideoReelsSection from "@/components/VideoReelsSection";
 import { ArrowRight } from "lucide-react";
@@ -26,78 +27,13 @@ export default function HomePage() {
     (p) => p.isWaffle || p.category === "waffle-collection"
   ).slice(0, 4);
 
-  // Category Tiles matching FIRVT
-  const categoryTiles = [
-    {
-      title: "TOP WEAR",
-      subtitle: "Heavyweight Boxy Tees",
-      image: "/products/sku-01/image_1.jpg",
-      href: "/shop?category=t-shirts"
-    },
-    {
-      title: "WAFFLE KNITS",
-      subtitle: "240 GSM Signature Weave",
-      image: "/products/sku-02/image_1.jpg",
-      href: "/shop?collection=waffle-collection"
-    },
-    {
-      title: "WINTER OUTERWEAR",
-      subtitle: "Metal Clasp Hoodies & Fleece",
-      image: "/products/sku-03/image_1.jpg",
-      href: "/shop?collection=winter-collection"
-    },
-    {
-      title: "BOTTOMS & PANTS",
-      subtitle: "Baggy Washed Sweatpants",
-      image: "/products/sku-05/image_1.jpg",
-      href: "/shop?category=bottoms"
-    }
-  ];
-
   return (
     <div className="flex flex-col w-full min-h-screen bg-white">
       {/* 1. HERO CAMPAIGN BANNER */}
       <HeroBanner />
 
-      {/* 2. SHOP BY CATEGORY TILES (FIRVT Style) */}
-      <section className="py-12 sm:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <div className="text-center mb-8 sm:mb-10">
-          <p className="text-xs font-bold tracking-[0.2em] uppercase text-[#11716c] mb-1">
-            CURATED CATALOG
-          </p>
-          <h2 className="text-2xl sm:text-3xl font-extrabold uppercase tracking-widest text-neutral-900">
-            SHOP BY CATEGORY
-          </h2>
-        </div>
-
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-          {categoryTiles.map((cat) => (
-            <Link
-              key={cat.title}
-              href={cat.href}
-              className="group relative aspect-4/5 overflow-hidden bg-neutral-900 block"
-            >
-              <img
-                src={cat.image}
-                alt={cat.title}
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 opacity-90"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
-              <div className="absolute bottom-4 left-4 right-4 text-white">
-                <p className="text-[10px] sm:text-xs text-neutral-300 uppercase tracking-wider mb-1">
-                  {cat.subtitle}
-                </p>
-                <div className="flex items-center justify-between">
-                  <h3 className="text-sm sm:text-base font-bold uppercase tracking-wider">
-                    {cat.title}
-                  </h3>
-                  <ArrowRight className="w-4 h-4 text-white transform group-hover:translate-x-1 transition-transform" />
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
+      {/* 2. SHOP BY CATEGORY TILES (Editable from Admin) */}
+      <CategoryTiles />
 
       {/* 3. NEW ARRIVAL SECTION */}
       <section className="py-12 sm:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full border-t border-neutral-100">

@@ -155,8 +155,12 @@ export default function Footer() {
 
         {/* Bottom Bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-neutral-500">
-          <div>
-            &copy; {new Date().getFullYear()} V-MIND FASHION. All rights reserved. Made in Jaipur, India.
+          <div className="flex items-center gap-2">
+            <span>&copy; {new Date().getFullYear()} V-MIND FASHION. All rights reserved. Made in Jaipur, India.</span>
+            <span>&bull;</span>
+            <Link href="/admin" className="text-neutral-500 hover:text-neutral-300 transition-colors underline decoration-neutral-800">
+              Admin Portal
+            </Link>
           </div>
 
           {/* Payment & Security Badges */}

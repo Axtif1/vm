@@ -424,7 +424,7 @@ export default function CartDrawer() {
                   <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" /> Secure Checkout
                 </span>
                 <span>•</span>
-                <span>7 Days Hassle-Free Exchange</span>
+                <span>4 Days Hassle-Free Exchange</span>
               </div>
             </div>
           )}

@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useState, use } from "react";
+import React, { useState, useEffect, use } from "react";
 import Link from "next/link";
 import { notFound, useRouter } from "next/navigation";
 import { PRODUCTS } from "@/data/products";
+import { DEFAULT_SIZE_GUIDE } from "@/data/sizeGuide";
 import { formatPrice } from "@/utils/currency";
 import { useCart } from "@/context/CartContext";
 import ProductCard from "@/components/ProductCard";
@@ -39,7 +40,31 @@ export default function ProductDetailPage({ params }) {
   const [quantity, setQuantity] = useState(1);
   const [isAdded, setIsAdded] = useState(false);
   const [showSizeModal, setShowSizeModal] = useState(false);
+  const [sizeGuide, setSizeGuide] = useState(DEFAULT_SIZE_GUIDE);
   const [activeTab, setActiveTab] = useState("description");
+
+  useEffect(() => {
+    const loadSizeGuide = () => {
+      try {
+        const saved = localStorage.getItem("vmind_size_guide");
+        if (saved) {
+          setSizeGuide({ ...DEFAULT_SIZE_GUIDE, ...JSON.parse(saved) });
+        }
+      } catch (e) {
+        console.error("Failed to load size guide", e);
+      }
+    };
+
+    loadSizeGuide();
+
+    window.addEventListener("storage", loadSizeGuide);
+    window.addEventListener("vmind_sizeguide_updated", loadSizeGuide);
+
+    return () => {
+      window.removeEventListener("storage", loadSizeGuide);
+      window.removeEventListener("vmind_sizeguide_updated", loadSizeGuide);
+    };
+  }, []);
 
   const discountPercent =
     product.originalPrice && product.originalPrice > product.price
@@ -196,10 +221,10 @@ export default function ProductDetailPage({ params }) {
                 <button
                   type="button"
                   onClick={() => setShowSizeModal(true)}
-                  className="inline-flex items-center gap-1 text-xs text-[#11716c] hover:underline font-bold uppercase tracking-wide"
+                  className="inline-flex items-center gap-1 text-xs text-[#11716c] hover:underline font-bold uppercase tracking-wide cursor-pointer"
                 >
                   <Ruler className="w-3.5 h-3.5" />
-                  <span>Size Guide</span>
+                  <span>{sizeGuide.buttonText || "Size Guide"}</span>
                 </button>
               </div>
 
@@ -287,7 +312,7 @@ export default function ProductDetailPage({ params }) {
               </div>
               <div className="flex flex-col items-center gap-1 border-x border-neutral-200">
                 <RotateCcw className="w-4 h-4 text-[#11716c]" />
-                <span>7-Day Easy Exchange</span>
+                <span>4-Day Easy Exchange</span>
               </div>
               <div className="flex flex-col items-center gap-1">
                 <ShieldCheck className="w-4 h-4 text-[#11716c]" />
@@ -346,7 +371,7 @@ export default function ProductDetailPage({ params }) {
                 {activeTab === "shipping" && (
                   <div className="space-y-2">
                     <p>&bull; <strong>Domestic Delivery:</strong> Dispatched within 24-48 hours from Jaipur. Standard pan-India delivery takes 2–5 business days.</p>
-                    <p>&bull; <strong>Exchanges:</strong> We offer a 7-day hassle-free size replacement policy for unworn items with tags attached.</p>
+                    <p>&bull; <strong>Exchanges:</strong> We offer a 4-day hassle-free size replacement policy for unworn items with tags attached.</p>
                   </div>
                 )}
               </div>
@@ -382,12 +407,12 @@ export default function ProductDetailPage({ params }) {
               <div className="flex items-center gap-2">
                 <Ruler className="w-5 h-5 text-[#11716c]" />
                 <h3 className="text-sm font-bold uppercase tracking-wider text-neutral-900">
-                  Size Guide &bull; In Inches
+                  {sizeGuide.modalTitle || "Size Guide"} &bull; In {sizeGuide.unit || "Inches"}
                 </h3>
               </div>
               <button
                 onClick={() => setShowSizeModal(false)}
-                className="p-1 rounded-full text-neutral-400 hover:text-neutral-900"
+                className="p-1 rounded-full text-neutral-400 hover:text-neutral-900 cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -398,28 +423,33 @@ export default function ProductDetailPage({ params }) {
                 <thead className="bg-neutral-100 text-neutral-800 font-bold uppercase">
                   <tr>
                     <th className="p-2.5">Size</th>
-                    <th className="p-2.5">Chest (Inches)</th>
-                    <th className="p-2.5">Length (Inches)</th>
-                    <th className="p-2.5">Shoulder (Inches)</th>
+                    <th className="p-2.5">Chest ({sizeGuide.unit || "Inches"})</th>
+                    <th className="p-2.5">Length ({sizeGuide.unit || "Inches"})</th>
+                    <th className="p-2.5">Shoulder ({sizeGuide.unit || "Inches"})</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-neutral-100 text-neutral-600 font-medium">
-                  <tr><td className="p-2.5 font-bold text-neutral-900">S</td><td className="p-2.5">42</td><td className="p-2.5">28</td><td className="p-2.5">20.5</td></tr>
-                  <tr><td className="p-2.5 font-bold text-neutral-900">M</td><td className="p-2.5">44</td><td className="p-2.5">29</td><td className="p-2.5">21.5</td></tr>
-                  <tr><td className="p-2.5 font-bold text-neutral-900">L</td><td className="p-2.5">46</td><td className="p-2.5">30</td><td className="p-2.5">22.5</td></tr>
-                  <tr><td className="p-2.5 font-bold text-neutral-900">XL</td><td className="p-2.5">48</td><td className="p-2.5">31</td><td className="p-2.5">23.5</td></tr>
-                  <tr><td className="p-2.5 font-bold text-neutral-900">XXL</td><td className="p-2.5">50</td><td className="p-2.5">32</td><td className="p-2.5">24.5</td></tr>
+                  {sizeGuide.rows?.map((row) => (
+                    <tr key={row.size}>
+                      <td className="p-2.5 font-bold text-neutral-900">{row.size}</td>
+                      <td className="p-2.5">{row.chest}</td>
+                      <td className="p-2.5">{row.length}</td>
+                      <td className="p-2.5">{row.shoulder}</td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
 
-            <p className="text-[11px] text-neutral-500 italic">
-              * Note: Our garments are engineered with relaxed, drop-shoulder proportions. If you prefer a tighter or standard silhouette, size down one size.
-            </p>
+            {sizeGuide.note && (
+              <p className="text-[11px] text-neutral-500 italic">
+                {sizeGuide.note}
+              </p>
+            )}
 
             <button
               onClick={() => setShowSizeModal(false)}
-              className="firvt-pill-btn w-full bg-[#11716c] text-white py-2.5 text-xs font-bold"
+              className="firvt-pill-btn w-full bg-[#11716c] hover:bg-[#0c5652] text-white py-2.5 text-xs font-bold rounded-full cursor-pointer transition-colors"
             >
               Got It
             </button>

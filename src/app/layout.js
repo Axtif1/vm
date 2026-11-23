@@ -1,11 +1,6 @@
 import "./compiled-tailwind.css";
 import { CartProvider } from "@/context/CartContext";
-import AnnouncementBar from "@/components/AnnouncementBar";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import CartDrawer from "@/components/CartDrawer";
-import SearchModal from "@/components/SearchModal";
-import QuickAddModal from "@/components/QuickAddModal";
+import StoreLayoutWrapper from "@/components/StoreLayoutWrapper";
 
 export const metadata = {
   title: "V-MIND FASHION | Contemporary Indian Streetwear & Apparel",
@@ -33,13 +28,7 @@ export default function RootLayout({ children }) {
       </head>
       <body suppressHydrationWarning className="font-sans min-h-screen flex flex-col bg-white text-neutral-900 selection:bg-[#11716c] selection:text-white">
         <CartProvider>
-          <AnnouncementBar />
-          <Header />
-          <main className="flex-1 w-full">{children}</main>
-          <Footer />
-          <CartDrawer />
-          <SearchModal />
-          <QuickAddModal />
+          <StoreLayoutWrapper>{children}</StoreLayoutWrapper>
         </CartProvider>
       </body>
     </html>
